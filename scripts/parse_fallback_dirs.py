@@ -17,8 +17,22 @@ for s in strings:
     line.append("or_port")
     lines.append(line)
 
+bridges = []
+with open('../bridge_reachability/tor-bridges-ip-port.csv') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    for row in csv_reader:
+        bridges.append(row)
+
+
+mix = bridges + lines
+
+unique_X = []
+for i, row in enumerate(mix):
+    if row not in mix[i + 1:]:
+        unique_X.append(row)
+
 with open('tor-bridges-ip-port-updated.csv', mode='w') as csv_file:
     csv_writer = csv.writer(csv_file, delimiter=',')
 
-    for l in lines:
-        csv_writer.writerow(l)
+    for m in unique_X:
+        csv_writer.writerow(m)
